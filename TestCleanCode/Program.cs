@@ -16,7 +16,9 @@ builder.Services.AddDbContext<AppDbContext>(
 		builder.Configuration.GetConnectionString("DefaultConnection"))
 	);
 
-builder.Services.AddIdentity<UserInfo, IdentityRole<Guid>>()
+builder.Services.AddIdentity<UserInfo, IdentityRole<Guid>>(
+	options => options.User.RequireUniqueEmail = true
+	)
 	.AddEntityFrameworkStores<AppDbContext>()
 	.AddDefaultTokenProviders();
 
