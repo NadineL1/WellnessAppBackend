@@ -7,6 +7,7 @@ public class DailyLog
 	public int Id { get; set; }
 	public DateTime LogDate { get; set; }
 
+	public int MoodId { get; set; }
 	public int WorkoutId{ get; set; }
 	public int WaterId { get; set; }
 	public Guid UserInfoId { get; set; }
