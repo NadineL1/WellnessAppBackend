@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260824115419_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20260912161508_newInit")]
+    partial class newInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,10 +53,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("MoodId");
 
                     b.HasIndex("UserInfoId");
-
-                    b.HasIndex("WaterId");
-
-                    b.HasIndex("WorkoutId");
 
                     b.ToTable("DailyLogs");
                 });
@@ -117,8 +113,8 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("Birthday")
+                        .HasColumnType("date");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -193,6 +189,9 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("DailyLogId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("WaterChecked")
                         .HasColumnType("bit");
 
@@ -200,6 +199,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DailyLogId")
+                        .IsUnique();
 
                     b.ToTable("Waters");
                 });
@@ -212,6 +214,9 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("DailyLogId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -220,6 +225,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DailyLogId")
+                        .IsUnique();
 
                     b.ToTable("Workouts");
                 });
@@ -369,19 +377,29 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Water", null)
-                        .WithMany("DailyLogs")
-                        .HasForeignKey("WaterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Workout", null)
-                        .WithMany("DailyLogs")
-                        .HasForeignKey("WorkoutId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("UserInfo");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Water", b =>
+                {
+                    b.HasOne("Domain.Entities.DailyLog", "DailyLog")
+                        .WithOne("Water")
+                        .HasForeignKey("Domain.Entities.Water", "DailyLogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DailyLog");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Workout", b =>
+                {
+                    b.HasOne("Domain.Entities.DailyLog", "DailyLog")
+                        .WithOne("Workout")
+                        .HasForeignKey("Domain.Entities.Workout", "DailyLogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DailyLog");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -435,22 +453,21 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.DailyLog", b =>
+                {
+                    b.Navigation("Water")
+                        .IsRequired();
+
+                    b.Navigation("Workout")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Entities.Mood", b =>
                 {
                     b.Navigation("DailyLogs");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserInfo", b =>
-                {
-                    b.Navigation("DailyLogs");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Water", b =>
-                {
-                    b.Navigation("DailyLogs");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Workout", b =>
                 {
                     b.Navigation("DailyLogs");
                 });

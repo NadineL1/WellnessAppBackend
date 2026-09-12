@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class newInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,7 @@ namespace Infrastructure.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
-                    Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Birthday = table.Column<DateOnly>(type: "date", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -67,34 +67,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Moods", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Waters",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    WaterConsumed = table.Column<int>(type: "int", nullable: false),
-                    WaterChecked = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Waters", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Workouts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WorkoutCompleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Workouts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -230,16 +202,46 @@ namespace Infrastructure.Migrations
                         principalTable: "Moods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Waters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WaterConsumed = table.Column<int>(type: "int", nullable: false),
+                    WaterChecked = table.Column<bool>(type: "bit", nullable: false),
+                    DailyLogId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Waters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DailyLogs_Waters_WaterId",
-                        column: x => x.WaterId,
-                        principalTable: "Waters",
+                        name: "FK_Waters_DailyLogs_DailyLogId",
+                        column: x => x.DailyLogId,
+                        principalTable: "DailyLogs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workouts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WorkoutCompleted = table.Column<bool>(type: "bit", nullable: false),
+                    DailyLogId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workouts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DailyLogs_Workouts_WorkoutId",
-                        column: x => x.WorkoutId,
-                        principalTable: "Workouts",
+                        name: "FK_Workouts_DailyLogs_DailyLogId",
+                        column: x => x.DailyLogId,
+                        principalTable: "DailyLogs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -306,14 +308,16 @@ namespace Infrastructure.Migrations
                 column: "UserInfoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DailyLogs_WaterId",
-                table: "DailyLogs",
-                column: "WaterId");
+                name: "IX_Waters_DailyLogId",
+                table: "Waters",
+                column: "DailyLogId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_DailyLogs_WorkoutId",
-                table: "DailyLogs",
-                column: "WorkoutId");
+                name: "IX_Workouts_DailyLogId",
+                table: "Workouts",
+                column: "DailyLogId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -335,22 +339,22 @@ namespace Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "DailyLogs");
+                name: "Waters");
+
+            migrationBuilder.DropTable(
+                name: "Workouts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "DailyLogs");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Moods");
-
-            migrationBuilder.DropTable(
-                name: "Waters");
-
-            migrationBuilder.DropTable(
-                name: "Workouts");
         }
     }
 }
