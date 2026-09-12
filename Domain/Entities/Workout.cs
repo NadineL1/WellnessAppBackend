@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Domain.Entities;
 
@@ -10,5 +11,6 @@ public class Workout
 
 	// nav prop
 	public int DailyLogId { get; set; }
+	[ForeignKey("DailyLogId")]
 	public DailyLog DailyLog { get; set; }
 }
