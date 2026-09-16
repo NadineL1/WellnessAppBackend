@@ -1,7 +1,7 @@
-﻿using Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Domain.Entities;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Infrastructure.Repositories
 {
@@ -11,6 +11,14 @@ namespace Infrastructure.Repositories
 		public DailyLogRepository (AppDbContext dbContext)
 		{
 			_dbContext = dbContext;
+		}
+
+		// crud
+
+		public async Task<List<DailyLog>> GetAllDailyLogs()
+		{
+			var dailyLogs = await _dbContext.DailyLogs.ToListAsync();
+			return dailyLogs;
 		}
 
 	}
