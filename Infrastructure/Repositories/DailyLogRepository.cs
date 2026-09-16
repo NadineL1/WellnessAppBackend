@@ -21,5 +21,14 @@ namespace Infrastructure.Repositories
 			return dailyLogs;
 		}
 
+		public async Task<List<DailyLog>> GetDailyLogsByUser(Guid UserInfoId)
+		{
+			var dailyLogByUser = await _dbContext.DailyLogs
+				.Where(d => d.UserInfoId == UserInfoId)
+				.ToListAsync();
+
+			return dailyLogByUser;
+		}
+
 	}
 }

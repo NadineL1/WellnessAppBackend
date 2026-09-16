@@ -30,6 +30,13 @@ public class DailyLogController : ControllerBase
 		return Ok(allDailyLogs);
 	}
 
+	[HttpGet("myDailyLogs")]
+	public async Task<ActionResult> GetMyDailyLogs(Guid userId)
+	{
+		var myDailyLogs = await _dailyLogService.GetDailyLogsByUser(userId);
+		return Ok();
+	}
+
 
 
 }

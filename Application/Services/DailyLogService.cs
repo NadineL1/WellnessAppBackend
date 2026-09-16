@@ -21,5 +21,11 @@ public class DailyLogService
 		return dailyLogs;
 	}
 
+	public async Task<List<DailyLog>> GetDailyLogsByUser(Guid userId)
+	{
+		var dailyLogsByUser = await _dailyLogRepository.GetDailyLogsByUser(userId);
+
+		return dailyLogsByUser;
+	}
 
 }
