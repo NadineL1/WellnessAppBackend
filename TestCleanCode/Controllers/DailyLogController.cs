@@ -23,14 +23,14 @@ public class DailyLogController : ControllerBase
 
 	// crud
 	[AllowAnonymous] // öppen för ALLA dailylogs - ta bort senare. implementera för admin in future?
-	[HttpGet]
+	[HttpGet("Admin")]
 	public async Task<ActionResult> GetAllDailyLogs()
 	{
 		var allDailyLogs = await _dailyLogService.GetAllDailyLogs();
 		return Ok(allDailyLogs);
 	}
 
-	[HttpGet("myDailyLogs")]
+	[HttpGet]
 	public async Task<ActionResult> GetMyDailyLogs()
 	{
 		var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
@@ -38,10 +38,11 @@ public class DailyLogController : ControllerBase
 		return Ok(myDailyLogs);
 	}
 
-	[HttpPost("dailylogs")]
-	public async Task<ActionResult<bool>> CreateDailyLog(int moodId, int workoutId, int waterId, UserInfo userInfo, int waterConsumed, bool waterChecked, string workoutDesc, bool workoutChecked)
+	[HttpPost]
+	public async Task<ActionResult<bool>> CreateDailyLog(int moodId, int waterConsumed, bool waterChecked, string workoutDesc, bool workoutChecked)
 	{
-		var newDailyLog = await _dailyLogService.CreateDailyLog(moodId,workoutId, waterId,userInfo,waterConsumed,waterChecked,workoutDesc,workoutChecked);
+		var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+		var newDailyLog = await _dailyLogService.CreateDailyLog(moodId,userId,waterConsumed,waterChecked,workoutDesc,workoutChecked);
 
 		return Created();
 	}
