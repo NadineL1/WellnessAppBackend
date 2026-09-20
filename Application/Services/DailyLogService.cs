@@ -28,31 +28,29 @@ public class DailyLogService
 		return dailyLogsByUser;
 	}
 
-	public async Task<bool> CreateDailyLog(int moodId, int workoutId, int waterId, UserInfo userInfo, int waterConsumed, bool waterChecked, string workoutDesc, bool workoutChecked)
+	public async Task<bool> CreateDailyLog(int moodId, Guid userInfoId, int waterConsumed, bool waterChecked, string workoutDesc, bool workoutChecked)
 	{
 		var dailyLog = new DailyLog
 		{
 			LogDate = DateTime.UtcNow,
 			MoodId = moodId,
-			WorkoutId = workoutId,
-			WaterId = waterId,
-			UserInfo = userInfo,
-			UserInfoId = userInfo.Id
+			UserInfoId = userInfoId
 		};
 		var workout = new Workout
 		{
-			Id = waterId,
 			WorkoutCompleted = workoutChecked,
 			Description = workoutDesc
 		};
 		var water = new Water
 		{
-			Id = waterId,
 			WaterChecked = waterChecked,
 			WaterConsumed = waterConsumed
 		};
 
-		var result = await _dailyLogRepository.AddDailyLog(dailyLog, workout, water);
+		dailyLog.Water = water;
+		dailyLog.Workout = workout;
+
+		var result = await _dailyLogRepository.AddDailyLog(dailyLog);
 
 		return result;
 	}
