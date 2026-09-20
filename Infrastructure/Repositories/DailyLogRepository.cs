@@ -17,21 +17,21 @@ namespace Infrastructure.Repositories
 
 		public async Task<List<DailyLog>> GetAllDailyLogs()
 		{
-			var dailyLogs = await _dbContext.DailyLogs.Include(d => d.Water).Include(d => d.Workout).Include(d => d.UserInfo).Include(d => d.mood)
+			var dailyLogs = await _dbContext.DailyLogs.Include(d => d.Water).Include(d => d.Workout).Include(d => d.Mood)
 				.ToListAsync();
 			return dailyLogs;
 		}
 
 		public async Task<List<DailyLog>> GetDailyLogsByUser(Guid UserInfoId)
 		{
-			var dailyLogByUser = await _dbContext.DailyLogs
+			var dailyLogByUser = await _dbContext.DailyLogs.Include(d => d.Water).Include(d => d.Workout).Include(d => d.Mood)
 				.Where(d => d.UserInfoId == UserInfoId)
 				.ToListAsync();
 
 			return dailyLogByUser;
 		}
 
-		public async Task <bool> AddDailyLog(DailyLog dailyLog, Workout workout, Water water)
+		public async Task <bool> AddDailyLog(DailyLog dailyLog)
 		{
 			await _dbContext.DailyLogs.AddAsync(dailyLog);
 
