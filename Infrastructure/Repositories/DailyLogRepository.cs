@@ -17,7 +17,8 @@ namespace Infrastructure.Repositories
 
 		public async Task<List<DailyLog>> GetAllDailyLogs()
 		{
-			var dailyLogs = await _dbContext.DailyLogs.ToListAsync();
+			var dailyLogs = await _dbContext.DailyLogs.Include(d => d.Water).Include(d => d.Workout).Include(d => d.UserInfo).Include(d => d.mood)
+				.ToListAsync();
 			return dailyLogs;
 		}
 
@@ -28,6 +29,26 @@ namespace Infrastructure.Repositories
 				.ToListAsync();
 
 			return dailyLogByUser;
+		}
+
+		public async Task <bool> AddDailyLog(DailyLog dailyLog, Workout workout, Water water)
+		{
+			await _dbContext.DailyLogs.AddAsync(dailyLog);
+
+			var result = 0 < await _dbContext.SaveChangesAsync();
+
+			return result;
+		}
+
+		public async Task <bool> DeleteLog(int id)
+		{
+			var logToDelete = await _dbContext.DailyLogs.FirstOrDefaultAsync(l => l.Id == id);
+
+			_dbContext.DailyLogs.Remove(logToDelete);
+
+			var result = 0 < await _dbContext.SaveChangesAsync();
+			return result;
+
 		}
 
 	}

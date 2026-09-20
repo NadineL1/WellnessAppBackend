@@ -15,6 +15,7 @@ public class DailyLog
 	public required Guid UserInfoId { get; set; }
 
 	// nav props
+	public Mood Mood { get; set; }
 	public UserInfo UserInfo { get; set; }
 	public Workout Workout { get; set; }
 	public Water Water { get; set; }

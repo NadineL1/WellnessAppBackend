@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260918142022_dataseeding")]
+    partial class dataseeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,35 +63,35 @@ namespace Infrastructure.Migrations
                             LogDate = new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MoodId = 1,
                             UserInfoId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            WaterId = 4,
-                            WorkoutId = 1
+                            WaterId = 2,
+                            WorkoutId = 2
                         },
                         new
                         {
                             Id = 2,
                             LogDate = new DateTime(2026, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MoodId = 5,
+                            MoodId = 1,
                             UserInfoId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            WaterId = 3,
+                            WaterId = 2,
                             WorkoutId = 2
                         },
                         new
                         {
                             Id = 3,
                             LogDate = new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MoodId = 5,
+                            MoodId = 1,
                             UserInfoId = new Guid("22222222-2222-2222-2222-222222222222"),
                             WaterId = 2,
-                            WorkoutId = 3
+                            WorkoutId = 2
                         },
                         new
                         {
                             Id = 4,
                             LogDate = new DateTime(2026, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MoodId = 4,
+                            MoodId = 1,
                             UserInfoId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            WaterId = 1,
-                            WorkoutId = 4
+                            WaterId = 2,
+                            WorkoutId = 2
                         });
                 });
 
@@ -500,7 +503,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.DailyLog", b =>
                 {
-                    b.HasOne("Domain.Entities.Mood", "mood")
+                    b.HasOne("Domain.Entities.Mood", null)
                         .WithMany("DailyLogs")
                         .HasForeignKey("MoodId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -513,8 +516,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("UserInfo");
-
-                    b.Navigation("mood");
                 });
 
             modelBuilder.Entity("Domain.Entities.Water", b =>

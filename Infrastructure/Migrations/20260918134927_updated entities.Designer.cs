@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260918134927_updated entities")]
+    partial class updatedentities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,44 +55,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserInfoId");
 
                     b.ToTable("DailyLogs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            LogDate = new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MoodId = 1,
-                            UserInfoId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            WaterId = 4,
-                            WorkoutId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            LogDate = new DateTime(2026, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MoodId = 5,
-                            UserInfoId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            WaterId = 3,
-                            WorkoutId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            LogDate = new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MoodId = 5,
-                            UserInfoId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            WaterId = 2,
-                            WorkoutId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            LogDate = new DateTime(2026, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MoodId = 4,
-                            UserInfoId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            WaterId = 1,
-                            WorkoutId = 4
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Mood", b =>
@@ -214,46 +179,6 @@ namespace Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            AccessFailedCount = 0,
-                            Age = 28,
-                            Birthday = new DateOnly(1997, 10, 20),
-                            ConcurrencyStamp = "00000000-0000-0000-0000-000000000001",
-                            Email = "hej@info.com",
-                            EmailConfirmed = false,
-                            FirstName = "Anna",
-                            LastName = "Andersson",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "HEJ@INFO.COM",
-                            NormalizedUserName = "HEJ@INFO.COM",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "00000000-0000-0000-0000-000000000001",
-                            TwoFactorEnabled = false,
-                            UserName = "hej@info.com"
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            AccessFailedCount = 0,
-                            Age = 25,
-                            Birthday = new DateOnly(2005, 12, 10),
-                            ConcurrencyStamp = "00000000-0000-0000-0000-000000000002",
-                            Email = "tja@info.com",
-                            EmailConfirmed = false,
-                            FirstName = "Bertil",
-                            LastName = "Bertilsson",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "TJA@INFO.COM",
-                            NormalizedUserName = "TJA@INFO.COM",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "00000000-0000-0000-0000-000000000002",
-                            TwoFactorEnabled = false,
-                            UserName = "tja@info.com"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Water", b =>
@@ -279,36 +204,6 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Waters");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DailyLogId = 1,
-                            WaterChecked = true,
-                            WaterConsumed = 3
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DailyLogId = 2,
-                            WaterChecked = true,
-                            WaterConsumed = 5
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DailyLogId = 3,
-                            WaterChecked = false,
-                            WaterConsumed = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            DailyLogId = 4,
-                            WaterChecked = true,
-                            WaterConsumed = 10
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Workout", b =>
@@ -335,36 +230,6 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Workouts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DailyLogId = 1,
-                            Description = "Walk",
-                            WorkoutCompleted = true
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DailyLogId = 2,
-                            Description = "Yoga",
-                            WorkoutCompleted = true
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DailyLogId = 3,
-                            Description = "Running",
-                            WorkoutCompleted = true
-                        },
-                        new
-                        {
-                            Id = 4,
-                            DailyLogId = 4,
-                            Description = "Gym",
-                            WorkoutCompleted = true
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -500,7 +365,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.DailyLog", b =>
                 {
-                    b.HasOne("Domain.Entities.Mood", "mood")
+                    b.HasOne("Domain.Entities.Mood", null)
                         .WithMany("DailyLogs")
                         .HasForeignKey("MoodId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -513,8 +378,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("UserInfo");
-
-                    b.Navigation("mood");
                 });
 
             modelBuilder.Entity("Domain.Entities.Water", b =>
