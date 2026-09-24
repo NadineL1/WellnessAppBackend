@@ -60,7 +60,12 @@ public class AuthController : ControllerBase
 
 		var loginResult = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
 
-		return Ok(loginResult.Succeeded);
+		if (loginResult.Succeeded)
+		{
+			return Ok();
+		}
+
+		return BadRequest("invalid input");
 	}
 
 	[Authorize]
