@@ -17,7 +17,7 @@ public class WaterController : ControllerBase
 	UserManager<UserInfo> _userManager;
 	public WaterController(WaterService waterService, UserManager<UserInfo> userManager )
 	{
-		_waterService = _waterService;
+		_waterService = waterService;
 		_userManager = userManager;
 	}
 

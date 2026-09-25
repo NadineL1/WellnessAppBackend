@@ -36,7 +36,11 @@ public class AuthController : ControllerBase
 		{
 			Id = Guid.NewGuid(),
 			UserName = model.Email,
-			Email = model.Email
+			Email = model.Email,
+			FirstName = model.FirstName,
+			LastName = model.LastName,
+			Age = model.Age,
+			Birthday = model.Birthday
 		};
 
 		var result = await _userManager.CreateAsync(UserToAdd, model.Password);
@@ -48,7 +52,7 @@ public class AuthController : ControllerBase
 	}
 
 	[HttpPost("login")]
-	public async Task<ActionResult> LoginUser(RegisterModelDto model)
+	public async Task<ActionResult> LoginUser(LoginModelDto model)
 	{
 		if(!ModelState.IsValid)
 			return BadRequest("login failed due to invalid input");
@@ -77,7 +81,8 @@ public class AuthController : ControllerBase
 		return Ok("Logging out"); 
 	}
 
-	public class RegisterModelDto
+
+	public class LoginModelDto
 	{
 		[Required]
 		public required string Email { get; set; }
@@ -85,6 +90,21 @@ public class AuthController : ControllerBase
 		[Required]
 		public required string Password { get; set; }
 	}
-	
+	public class RegisterModelDto
+	{
+		[Required]
+		public required string Email { get; set; }
+		[Required]
+		public required string Password { get; set; }
+		[Required]
+		public required string FirstName { get; set; }
+		[Required]
+		public required string LastName { get; set; }
+		[Required]
+		public required int Age { get; set; }
+		[Required]
+		public  required DateOnly Birthday { get; set; } 
+	}
+
 
 }
