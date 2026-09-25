@@ -33,6 +33,8 @@ namespace Infrastructure.Repositories
 
 		public async Task <bool> AddDailyLog(DailyLog dailyLog)
 		{
+			var mood = await _dbContext.Moods.FirstOrDefaultAsync(m => m.Id == dailyLog.MoodId);
+			dailyLog.Mood = mood;
 			await _dbContext.DailyLogs.AddAsync(dailyLog);
 
 			var result = 0 < await _dbContext.SaveChangesAsync();
