@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Domain.Dtos;
 
 namespace TestCleanCode.Controllers;
 
-[Authorize]
+//[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class DailyLogController : ControllerBase
@@ -39,10 +40,10 @@ public class DailyLogController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<ActionResult<bool>> CreateDailyLog(int moodId, int waterConsumed, bool waterChecked, string workoutDesc, bool workoutChecked)
+	public async Task<ActionResult<bool>> CreateDailyLog(DailyLogDto dailyLogDto)
 	{
 		var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-		var newDailyLog = await _dailyLogService.CreateDailyLog(moodId,userId,waterConsumed,waterChecked,workoutDesc,workoutChecked);
+		var newDailyLog = await _dailyLogService.CreateDailyLog(userId, dailyLogDto);
 
 		return Created();
 	}
@@ -54,3 +55,6 @@ public class DailyLogController : ControllerBase
 		return Ok(success);
 	}
 }
+
+
+

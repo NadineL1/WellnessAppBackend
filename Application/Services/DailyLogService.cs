@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Infrastructure.Repositories;
+using Domain.Dtos;
 
 namespace Application.Services;
 
@@ -28,23 +29,23 @@ public class DailyLogService
 		return dailyLogsByUser;
 	}
 
-	public async Task<bool> CreateDailyLog(int moodId, Guid userInfoId, int waterConsumed, bool waterChecked, string workoutDesc, bool workoutChecked)
+	public async Task<bool> CreateDailyLog(Guid userId, DailyLogDto dailyLogDto)
 	{
 		var dailyLog = new DailyLog
 		{
 			LogDate = DateTime.UtcNow,
-			MoodId = moodId,
-			UserInfoId = userInfoId
+			MoodId = dailyLogDto.MoodId,
+			UserInfoId = userId
 		};
 		var workout = new Workout
 		{
-			WorkoutCompleted = workoutChecked,
-			Description = workoutDesc
+			WorkoutCompleted = dailyLogDto.WorkoutChecked,
+			Description = dailyLogDto.WorkoutDesc
 		};
 		var water = new Water
 		{
-			WaterChecked = waterChecked,
-			WaterConsumed = waterConsumed
+			WaterChecked = dailyLogDto.WaterChecked,
+			WaterConsumed = dailyLogDto.WaterConsumed
 		};
 
 		dailyLog.Water = water;
