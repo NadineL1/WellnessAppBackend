@@ -55,12 +55,27 @@ public class DailyLogService
 
 		return result;
 	}
+	public async Task<bool> UpdateDailyLog(Guid userId, UpdateDailyLogDto updateDailyLogDto)
+	{
+
+		var currrentDailyLog = await _dailyLogRepository.GetDailyLogById(updateDailyLogDto.Id);
+		if (currrentDailyLog is null)
+			return false;
+
+		currrentDailyLog.MoodId = updateDailyLogDto.MoodId;
+		currrentDailyLog.Workout.WorkoutCompleted = updateDailyLogDto.WorkoutChecked;
+		currrentDailyLog.Workout.Description = updateDailyLogDto.WorkoutDesc;
+		currrentDailyLog.Water.WaterChecked = updateDailyLogDto.WaterChecked;
+		currrentDailyLog.Water.WaterConsumed = updateDailyLogDto.WaterConsumed;
+
+		var result = await _dailyLogRepository.UpdateDailyLog(currrentDailyLog);
+
+		return result;
+	}
 
 	public async Task<bool> RemoveLog(int id)
 	{
-		// check if user owns log ? 
 		var result = await _dailyLogRepository.DeleteLog(id);
-
 		return result;
 	}
 

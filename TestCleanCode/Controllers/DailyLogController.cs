@@ -8,7 +8,7 @@ using Domain.Dtos;
 
 namespace TestCleanCode.Controllers;
 
-//[Authorize]
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class DailyLogController : ControllerBase
@@ -48,11 +48,20 @@ public class DailyLogController : ControllerBase
 		return Created();
 	}
 
+	[HttpPut]
+	public async Task<ActionResult> UpdateDailyLog(UpdateDailyLogDto updateDailyLogDto)
+	{
+		var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+		var updateDailyLog = await _dailyLogService.UpdateDailyLog(userId, updateDailyLogDto);
+
+		return Created();
+	}
+
 	[HttpDelete]
 	public async Task<ActionResult<bool>> DeleteDailylog(int dailyLogId)
 	{
 		var success = await _dailyLogService.RemoveLog(dailyLogId);
-		return Ok(success);
+		return NoContent();
 	}
 }
 
