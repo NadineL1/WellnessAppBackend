@@ -36,13 +36,31 @@ builder.Services.AddAuthentication();
 
 builder.Services.AddAuthorization();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+	options.Cookie.SameSite = SameSiteMode.None;
+	options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+	options.Events.OnRedirectToLogin = context =>
+	{
+		context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+		return Task.CompletedTask;
+	};
+
+	options.Events.OnRedirectToAccessDenied = context =>
+	{
+		context.Response.StatusCode = StatusCodes.Status403Forbidden;
+		return Task.CompletedTask;
+	};
+});
+
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("FrontendDev", policy =>
 	{
 		policy.WithOrigins("http://localhost:5173")
 		.AllowAnyHeader()
-		.AllowAnyMethod();
+		.AllowAnyMethod()
+		.AllowCredentials();
 	});
 });
 
