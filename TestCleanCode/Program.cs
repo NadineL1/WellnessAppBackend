@@ -20,7 +20,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(
 	options => options.UseSqlServer(
-		builder.Configuration.GetConnectionString("DefaultConnection"))
+		builder.Configuration.GetConnectionString("PublishConnectionstring"))
 	);
 
 builder.Services.AddIdentity<UserInfo, IdentityRole<Guid>>(
@@ -57,7 +57,7 @@ builder.Services.AddCors(options =>
 {
 	options.AddPolicy("FrontendDev", policy =>
 	{
-		policy.WithOrigins("http://localhost:5173")
+		policy.WithOrigins("https://wellnessappfrontend-e8gpfpbkace8cges.swedencentral-01.azurewebsites.net/")
 		.AllowAnyHeader()
 		.AllowAnyMethod()
 		.AllowCredentials();
