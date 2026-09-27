@@ -22,15 +22,6 @@ public class DailyLogController : ControllerBase
 		_dailyLogService = dailyLogService;
 	}
 
-	// crud
-	[AllowAnonymous] // öppen för ALLA dailylogs - ta bort senare. implementera för admin in future?
-	[HttpGet("Admin")]
-	public async Task<ActionResult> GetAllDailyLogs()
-	{
-		var allDailyLogs = await _dailyLogService.GetAllDailyLogs();
-		return Ok(allDailyLogs);
-	}
-
 	[HttpGet]
 	public async Task<ActionResult> GetMyDailyLogs()
 	{
