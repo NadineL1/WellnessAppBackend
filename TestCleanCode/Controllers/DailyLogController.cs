@@ -41,7 +41,7 @@ public class DailyLogController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status201Created)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-	public async Task<ActionResult<bool>> CreateDailyLog(DailyLogDto dailyLogDto)
+	public async Task<ActionResult<bool>> CreateDailyLog([FromBody] DailyLogDto dailyLogDto)
 	{
 		if (!User.TryGetUserId(out var userId))
 		{
@@ -57,7 +57,7 @@ public class DailyLogController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> UpdateDailyLog(UpdateDailyLogDto updateDailyLogDto)
+	public async Task<ActionResult> UpdateDailyLog([FromBody]UpdateDailyLogDto updateDailyLogDto)
 	{
 		if (!User.TryGetUserId(out var userId))
 		{
@@ -78,7 +78,7 @@ public class DailyLogController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<bool>> DeleteDailylog(int dailyLogId)
+	public async Task<ActionResult<bool>> DeleteDailylog([FromQuery] int dailyLogId)
 	{
 		if (!User.TryGetUserId(out var userId))
 		{
