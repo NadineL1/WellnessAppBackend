@@ -63,6 +63,12 @@ public class DailyLogController : ControllerBase
 		{
 			return Unauthorized();
 		}
+
+		if(updateDailyLogDto.Id <= 0)
+		{
+			return BadRequest();
+		}
+
 		var updateDailyLog = await _dailyLogService.UpdateDailyLog(userId, updateDailyLogDto);
 
 		return Created();
