@@ -1,10 +1,11 @@
 ﻿using Application.Services;
+using Domain.Dtos;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Domain.Dtos;
+using TestCleanCode.Helpers;
 
 namespace TestCleanCode.Controllers;
 
@@ -25,7 +26,11 @@ public class DailyLogController : ControllerBase
 	[HttpGet]
 	public async Task<ActionResult> GetMyDailyLogs()
 	{
-		var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+		if (!User.TryGetUserId(out var userId))
+		{
+			return Unauthorized();
+		}
+
 		var myDailyLogs = await _dailyLogService.GetDailyLogsByUser(userId);
 		return Ok(myDailyLogs);
 	}
@@ -33,7 +38,10 @@ public class DailyLogController : ControllerBase
 	[HttpPost]
 	public async Task<ActionResult<bool>> CreateDailyLog(DailyLogDto dailyLogDto)
 	{
-		var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+		if (!User.TryGetUserId(out var userId))
+		{
+			return Unauthorized();
+		}
 		var newDailyLog = await _dailyLogService.CreateDailyLog(userId, dailyLogDto);
 
 		return Created();
@@ -42,7 +50,10 @@ public class DailyLogController : ControllerBase
 	[HttpPut]
 	public async Task<ActionResult> UpdateDailyLog(UpdateDailyLogDto updateDailyLogDto)
 	{
-		var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+		if (!User.TryGetUserId(out var userId))
+		{
+			return Unauthorized();
+		}
 		var updateDailyLog = await _dailyLogService.UpdateDailyLog(userId, updateDailyLogDto);
 
 		return Created();
@@ -51,6 +62,10 @@ public class DailyLogController : ControllerBase
 	[HttpDelete]
 	public async Task<ActionResult<bool>> DeleteDailylog(int dailyLogId)
 	{
+		if (!User.TryGetUserId(out var userId))
+		{
+			return Unauthorized();
+		}
 		var success = await _dailyLogService.RemoveLog(dailyLogId);
 		return NoContent();
 	}
