@@ -24,6 +24,8 @@ public class DailyLogController : ControllerBase
 	}
 
 	[HttpGet]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	public async Task<ActionResult> GetMyDailyLogs()
 	{
 		if (!User.TryGetUserId(out var userId))
@@ -36,6 +38,9 @@ public class DailyLogController : ControllerBase
 	}
 
 	[HttpPost]
+	[ProducesResponseType(StatusCodes.Status201Created)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	public async Task<ActionResult<bool>> CreateDailyLog(DailyLogDto dailyLogDto)
 	{
 		if (!User.TryGetUserId(out var userId))
@@ -48,6 +53,10 @@ public class DailyLogController : ControllerBase
 	}
 
 	[HttpPut]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> UpdateDailyLog(UpdateDailyLogDto updateDailyLogDto)
 	{
 		if (!User.TryGetUserId(out var userId))
@@ -60,6 +69,9 @@ public class DailyLogController : ControllerBase
 	}
 
 	[HttpDelete]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<bool>> DeleteDailylog(int dailyLogId)
 	{
 		if (!User.TryGetUserId(out var userId))
