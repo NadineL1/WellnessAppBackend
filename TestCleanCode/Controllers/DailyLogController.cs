@@ -71,7 +71,7 @@ public class DailyLogController : ControllerBase
 
 		var updateDailyLog = await _dailyLogService.UpdateDailyLog(userId, updateDailyLogDto);
 
-		return Created();
+		return Ok(updateDailyLogDto);
 	}
 
 	[HttpDelete]
