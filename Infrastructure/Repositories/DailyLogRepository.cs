@@ -31,7 +31,7 @@ namespace Infrastructure.Repositories
 
 		public async Task<DailyLog?> GetDailyLogById(int id)
 		{
-			var logById = await _dbContext.DailyLogs.Include(d => d.Water).Include(d => d.Workout).Include(d => d.Mood)
+			var logById = await _dbContext.DailyLogs.Include(d => d.Water).Include(d => d.Workout).Include(d => d.Mood).Include(d => d.UserInfo)
 				.FirstOrDefaultAsync(l => l.Id == id);
 
 			return logById;
@@ -63,6 +63,8 @@ namespace Infrastructure.Repositories
 		public async Task <bool> DeleteLog(int id)
 		{
 			var logToDelete = await _dbContext.DailyLogs.FirstOrDefaultAsync(l => l.Id == id);
+			if (logToDelete == null)
+				return false;
 
 			_dbContext.DailyLogs.Remove(logToDelete);
 

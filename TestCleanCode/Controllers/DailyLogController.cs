@@ -81,12 +81,16 @@ public class DailyLogController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<bool>> DeleteDailylog([FromQuery] int dailyLogId)
+		// you are still using the dailylog withous user id. any authenticated user can guess an integer id and delete someone elses log
 	{
 		if (!User.TryGetUserId(out var userId))
 		{
 			return Unauthorized();
 		}
-		var success = await _dailyLogService.RemoveLog(dailyLogId);
+		var success = await _dailyLogService.RemoveLog(dailyLogId, userId);
+		if (!success)
+			return NotFound();
+
 		return NoContent();
 	}
 }

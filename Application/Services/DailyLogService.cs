@@ -73,8 +73,12 @@ public class DailyLogService
 		return result;
 	}
 
-	public async Task<bool> RemoveLog(int id)
+	public async Task<bool> RemoveLog(int id, Guid userId)
 	{
+		var correctUser = await _dailyLogRepository.GetDailyLogById(id);
+		if (correctUser == null || correctUser.UserInfoId != userId)
+			return false;
+
 		var result = await _dailyLogRepository.DeleteLog(id);
 		return result;
 	}
