@@ -1,10 +1,7 @@
 ﻿using Application.Services;
 using Domain.Dtos;
-using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using TestCleanCode.Helpers;
 
 namespace TestCleanCode.Controllers;
@@ -12,16 +9,9 @@ namespace TestCleanCode.Controllers;
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class DailyLogController : ControllerBase
+public class DailyLogController (DailyLogService dailyLogService): ControllerBase
 {
-	UserManager<UserInfo> _userInfo;
-	DailyLogService _dailyLogService;
-
-	public DailyLogController(UserManager<UserInfo> userInfo, DailyLogService dailyLogService)
-	{
-		_userInfo = userInfo;
-		_dailyLogService = dailyLogService;
-	}
+	private readonly DailyLogService _dailyLogService = dailyLogService;
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
