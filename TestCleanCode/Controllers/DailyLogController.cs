@@ -49,7 +49,7 @@ public class DailyLogController : ControllerBase
 		}
 		var newDailyLog = await _dailyLogService.CreateDailyLog(userId, dailyLogDto);
 
-		return Created();
+		return CreatedAtAction(nameof(GetMyDailyLogs), newDailyLog);
 	}
 
 	[HttpPut]
